@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+import scrapy
+
+class JobItem(scrapy.Item):
+    item_id = scrapy.Field()
+    title =scrapy.Field()
+    organization =scrapy.Field()
+    about_company =scrapy.Field()
+    job_description =scrapy.Field()
+    open_date =scrapy.Field()
+    closing_date =scrapy.Field()
+    number_vacancies =scrapy.Field()
+    functional_area =scrapy.Field()
+    nationality =scrapy.Field()
+    contract_type =scrapy.Field()
+    contract_duration =scrapy.Field()
+    probation_period =scrapy.Field()
+    reference =scrapy.Field()
+    work_type =scrapy.Field()
+    gender =scrapy.Field()
+    open_ended =scrapy.Field()
+    salary_range =scrapy.Field()
+    year_of_expirence =scrapy.Field()
+    extension_passibility =scrapy.Field()
+    duties_responsibilities =scrapy.Field()
+    skills =scrapy.Field()
+    qualification =scrapy.Field()
+    jobs_location =scrapy.Field()
+    education =scrapy.Field()
+    submission_guideline =scrapy.Field()
+    submission_email =scrapy.Field()
+
