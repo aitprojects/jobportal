@@ -55,7 +55,7 @@ def prepare_job_csv_file():
         job_des = job.title
         job_des +=' '+ job.job_description
         job_des +=' '+job.duties_responsibilities
-        job_des +=' '+job.functional_area
+        job_des +=' '+job.skills
         job_des +=' '+ job.qualification
         writer.writerow([job_id, str(job_des.encode('utf-8'))])
     csvfile.close()
@@ -120,10 +120,11 @@ def calculate_job_similarities():
         c_job = Jobs.objects.get(id =job_id )
         for v,i in similar:
             p_job = Jobs.objects.get(id =i )
-            obj3 = JobsRelated(weight_des = v , job = p_job)
-            obj3.save()
-            c_job.jobs_related_to.add(obj3)
-            c_job.save()
+            if not c_job.jobs_related_to.filter(id =p_job.id).exists():
+                obj3 = JobsRelated(weight_des = v , job = p_job)
+                obj3.save()
+                c_job.jobs_related_to.add(obj3)
+                c_job.save()
             
             
             
@@ -139,13 +140,17 @@ def calculate_user_similarities():
         printProgressBar(index+1, len(users), prefix = 'Progress:', suffix = 'Complete', length = 50)
         
         similar = get_closest_neighs(user+10000001, tfidf_matrix , dataset , classes = 2)
-        c_job = User.objects.get(id =user).resume
+        c_resume = User.objects.get(id =user).resume
         for v,i in similar:
             p_job = User.objects.get(id =i - 10000001 )
-            obj3 = UserResumeRelated(weight_des = v , resumes = p_job.resume)
-            obj3.save()
-            c_job.resume_related_to.add(obj3)
-            c_job.save()
+            if not c_resume.resume_related_to.filter(id = p_job.resume.id).exists():
+                obj3 = UserResumeRelated(weight_des = v , resumes = p_job.resume)
+                obj3.save()
+                c_resume.resume_related_to.add(obj3)
+                c_resume.save()
+                
+                
+            
         
         
         
@@ -168,16 +173,19 @@ def find_job_condidates():
         for v,i in similar:
             if v > 0:
                 p_job = User.objects.get(id =i - 10000001)
-                c_job.top_condidates.add(p_job)
-                c_job.save()
+                if not c_job.top_condidates.filter(id = p_job.id).exists():
+                    c_job.top_condidates.add(p_job)
+                    c_job.save()
+                    
+                
                 
             
 
 
 def run_ml_codes():
-    transfer_data()
-    prepare_job_csv_file()
-    prepare_user_csv_file()
+    #transfer_data()
+    #prepare_job_csv_file()
+    #prepare_user_csv_file()
     calculate_job_similarities()
     calculate_user_similarities()
     find_job_condidates()

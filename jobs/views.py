@@ -20,7 +20,7 @@ def job(request , id):
 @api_view(['GET' , 'POST'])
 def job_list(request):
     job = Jobs.objects.all().order_by('-open_date')
-    job_ser = JobsSerializer(job , many=True).data
+    job_ser = JobsSerializerList(job , many=True).data
     return Response(job_ser)
 
 

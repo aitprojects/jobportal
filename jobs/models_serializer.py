@@ -56,6 +56,12 @@ class JobsSerializerResume(serializers.ModelSerializer):
         fields = ['id' , 'title']
         #depth = 1
         
+class JobsSerializerList(serializers.ModelSerializer):
+    class Meta:
+        model = Jobs
+        #fields ='__all__'
+        fields = ['id' , 'title' , 'website']
+        #depth = 1
 
 class JobsRelatedSerializer_(serializers.ModelSerializer):
     job = JobsSerializerResume()

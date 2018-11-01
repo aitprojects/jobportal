@@ -14,9 +14,11 @@ class Education(models.Model):
     end_date = models.DateField(  blank=True, null=True, default=timezone.now)  # Field name made lowercase.
     degree = models.CharField(  max_length=45, blank=True, null=True ,default="Which Degree Did You Earn ?")  # Field name made lowercase.
     descriptions = models.CharField(  max_length=250, blank=True, null=True ,default="Description about education")  # Field name made lowercase.
+    
     def __str__(self):
         trancate = Truncator(self.descriptions)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.descriptions)
         return trancate.words(5)
@@ -27,9 +29,11 @@ class Experiance(models.Model):
     start_date = models.DateTimeField(  blank=True, null=True,default=timezone.now)  # Field name made lowercase.
     end_date = models.DateTimeField(  blank=True, null=True,default=timezone.now)  # Field name made lowercase.
     description = models.CharField(  max_length=250, blank=True, null=True,default='Say Something About Your Job')  # Field name made lowercase.
+    
     def __str__(self):
         trancate = Truncator(self.description)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.description)
         return trancate.words(5)
@@ -37,9 +41,11 @@ class Experiance(models.Model):
 class Language(models.Model):
     language = models.CharField(  max_length=45, blank=True, null=True)  # Field name made lowercase.
     percent = models.IntegerField(  blank=True, null=True)  # Field name made lowercase.
+    
     def __str__(self):
         trancate = Truncator(self.language)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.language)
         return trancate.words(5)
@@ -47,9 +53,11 @@ class Language(models.Model):
 class Skills(models.Model):
     skill = models.CharField(max_length=45, blank=True, null=True)  # Field name made lowercase.
     percent = models.IntegerField(  blank=True, null=True)  # Field name made lowercase.
+    
     def __str__(self):
         trancate = Truncator(self.skill)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.skill)
         return trancate.words(5)
@@ -61,9 +69,11 @@ class UserResumeRelated(models.Model):
     weight_des = models.FloatField(blank=True, null=True ,default = 0)
     weight_req = models.FloatField(blank=True, null=True ,default = 0)
     weight = models.FloatField(blank=True, null=True ,default = 0)
+    
     def __str__(self):
         trancate = Truncator(self.resume.user.username)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.resume.user.username)
         return trancate.words(5)
@@ -87,11 +97,8 @@ class UserResume(models.Model):
     tags = models.CharField(  max_length=250, blank=True, null=True, default="no tags")  # Field name made lowercase.
     address = models.CharField(  max_length=250, blank=True, null=True , default="no address")  # Field name made lowercase.
     direction = models.CharField(  max_length=45, blank=True, null=True , default="nod")
-    
-    
+    resume = models.FileField('resume', max_length=128  ,upload_to = 'resume/uploaded/', default = 'defaults.doc')
     resume_related_to = models.ManyToManyField(UserResumeRelated)
-    
-    
     educations = models.ManyToManyField(Education)
     experiances = models.ManyToManyField(Experiance)
     languages = models.ManyToManyField(Language)
@@ -105,6 +112,7 @@ class UserResume(models.Model):
     def __str__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
@@ -149,6 +157,7 @@ class SpiderData(models.Model):
     def __str__(self):
         trancate = Truncator(self.title)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.title)
         return trancate.words(5)
@@ -164,6 +173,7 @@ class UserShortlisted(models.Model):
     def __str__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
@@ -172,6 +182,47 @@ class UserShortlisted(models.Model):
     class Meta:
         index_together = ['token']
 
+
+class UserApplaid(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateTimeField(default=timezone.now)
+    token = models.CharField(max_length=512, default='0')
+    user =models.ForeignKey(User, models.DO_NOTHING,   blank=True, null=True)
+    
+    def __str__(self):
+        trancate = Truncator(self.user.username)
+        return trancate.words(5)
+    
+    def __repr__(self):
+        trancate = Truncator(self.user.username)
+        return trancate.words(5)
+    
+    
+    class Meta:
+        index_together = ['token']
+        
+        
+        
+class UserAbuse(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateTimeField(default=timezone.now)
+    token = models.CharField(max_length=512, default='0')
+    user =models.ForeignKey(User, models.DO_NOTHING,   blank=True, null=True)
+    
+    def __str__(self):
+        trancate = Truncator(self.user.username)
+        return trancate.words(5)
+    
+    def __repr__(self):
+        trancate = Truncator(self.user.username)
+        return trancate.words(5)
+    
+    
+    class Meta:
+        index_together = ['token']
+        
+        
+        
 class UserOrBrowserSeen(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField(default=timezone.now)
@@ -181,6 +232,7 @@ class UserOrBrowserSeen(models.Model):
     def __str__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.user.username)
         return trancate.words(5)
@@ -200,12 +252,10 @@ class JobsRelated(models.Model):
     def __str__(self):
         trancate = Truncator(self.job.title)
         return trancate.words(5)
+    
     def __repr__(self):
         trancate = Truncator(self.job.title)
         return trancate.words(5)
-    
-    
-
 
     def save(self, *args, **kwargs):
         self.weight = self.weight_des + self.weight_req
@@ -246,16 +296,14 @@ class Jobs(models.Model):
     education = models.CharField(max_length=100, default='0')
     submission_guideline = models.CharField(max_length=8000, default='0')
     submission_email = models.CharField(max_length=50, default='0')
-    
-    
     website = models.CharField(max_length=50, default='0')
     deleted = models.BooleanField(default = False)
     active = models.BooleanField(default = True)
-
-
     jobs_related_to = models.ManyToManyField(JobsRelated)
     user_browser_seen = models.ManyToManyField(UserOrBrowserSeen)
+    user_applaid = models.ManyToManyField(UserApplaid)
     user_shortlisted = models.ManyToManyField(UserShortlisted)
+    user_abuse = models.ManyToManyField(UserAbuse)
     top_condidates = models.ManyToManyField(User)
     
     
@@ -273,20 +321,38 @@ class Jobs(models.Model):
         if request.user.is_anonymous:
             return self.user_browser_seen.filter(token = request.COOKIES.get('user_token')).exists()
         else:
-            return self.user_browser_seen.filter(token=request.COOKIES.get('user_token')).exists()
-
+            return self.user_browser_seen.filter(user = request.user).exists()
+        
     @property
-    def is_shortlisted(self , request = HttpRequest()):
+    def is_applaid(self , request = HttpRequest()):
         if request.user.is_anonymous:
-            return self.user_shortlisted.filter(token = request.COOKIES.get('user_token')).exists()
+            return self.user_abuse.filter(token = request.COOKIES.get('user_token')).exists()
         else:
-            return self.user_shortlisted.filter(token=request.COOKIES.get('user_token')).exists()
-
+            return self.user_abuse.filter(user=request.user).exists()
+        
+        
+    @property
+    def is_abuse(self , request = HttpRequest()):
+        if request.user.is_anonymous:
+            return self.user_applaid.filter(token = request.COOKIES.get('user_token')).exists()
+        else:
+            return self.user_applaid.filter(user=request.user).exists()
+        
+        
+        
     @property
     def is_expired(self):
+        return self.closing_date < timezone.now()
+    
+    @property
+    def is_active(self):
         return not self.active
 
 
+    @property
+    def get_number_of_unique_seen(self):
+        return self.user_browser_seen.count()
+    
     @property
     def get_number_of_unique_seen(self):
         return self.user_browser_seen.count()

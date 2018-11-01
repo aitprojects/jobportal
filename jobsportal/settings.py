@@ -148,6 +148,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+'''
+class MyPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size' 
+    max_page_size = 200
+    last_page_strings = ('the_end',)
+'''
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    #'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination'
+    'PAGE_SIZE': 5
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
